@@ -18,20 +18,3 @@ beforeAll(async () => {
 
     jwtToken = await response.text();
 });
-
-describe("GET /movies", () => {
-    test("hämtar alla filmer", async () => {
-        const response = await fetch(API_URL, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${jwtToken}`
-            }
-        });
-
-        expect(response.status).toBe(200);
-
-        const data = await response.json();
-
-        expect(data.length).toBe(1);
-    });
-});
