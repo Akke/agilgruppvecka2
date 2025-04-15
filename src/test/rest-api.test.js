@@ -18,3 +18,31 @@ beforeAll(async () => {
 
     jwtToken = await response.text();
 });
+
+
+describe("GET /movies", () => {
+    test("borde returnera status 200 och en array med längd 1", async () => {
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Autorization": `Bearer ${jwtToken}`
+            }
+        });
+        
+
+        // 1. Kontrollera status 200
+        
+        expect(response.status).toBe(200);
+        const filmer = await response.json();
+
+        
+        // 2. Kontrollera att arrayen har längd 1
+
+        expect(Array.isArray(filmer)).toBe(true);
+        expect(filmer.length).toBe(1);
+
+    });
+});
+
+
+    
