@@ -80,3 +80,21 @@ describe("PUT + GET /movies", () => {
         expect(responseGetData.title).toBe(newTitle);
     });
 });
+
+
+//  
+test("GET /movies/{id}", async () => {
+    const response = await fetch(`${API_URL}/${createdMovie.id}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${jwtToken}`
+        }
+    });
+
+    expect(response.status).toBe(200);
+
+    const data = await response.json();
+
+    expect(data.title).toBe(createdMovie.title);
+    expect(data.id).toBe(createdMovie.id);
+});
