@@ -81,8 +81,25 @@ describe("PUT + GET /movies", () => {
     });
 });
 
+describe("GET /movies/{id}", () => {
+    test("should return the movie details by ID", async () => {
+        const response = await fetch(`${API_URL}/${createdMovie.id}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${jwtToken}`,
+                "Content-Type": "application/json"
+            }
+        });
 
-//  
+        expect(response.status).toBe(200);
+
+        const data = await response.json();
+
+        expect(data.title).toBe(createdMovie.title);
+        expect(data.id).toBe(createdMovie.id);
+    });
+});
+ 
 test("GET /movies/{id}", async () => {
     const response = await fetch(`${API_URL}/${createdMovie.id}`, {
         method: "GET",
