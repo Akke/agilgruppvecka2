@@ -24,7 +24,34 @@ function getJWT(){
     })
 }
 
-function addMovie(){
+
+
+describe("GET /movies", () => {
+    getJWT()
+    addMovie()
+    cleanUp()
+    test("borde returnera status 200 och en array med längd 1", async () => {
+                // GET Munganga
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${jwtToken}`
+            }
+        });
+        
+        
+        expect(response.status).toBe(200);
+        const filmer = await response.json();
+
+
+        expect(Array.isArray(filmer)).toBe(true);
+        expect(filmer.length).toBeGreaterThan(0);
+
+    });
+});
+
+
+    function addMovie(){
     beforeEach(async () => {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -92,22 +119,6 @@ describe("PUT + GET /movies", () => {
 });
 
 
-// Detta test behöver läggas in i sin korrekta describe!! Ansvarig kodare får fixa till detta 
-// test("GET /movies/{id}", async () => {
-//     const response = await fetch(`${API_URL}/${createdMovie.id}`, {
-//         method: "GET",
-//         headers: {
-//             "Authorization": `Bearer ${jwtToken}`
-//         }
-//     });
-
-//     expect(response.status).toBe(200);
-
-//     const data = await response.json();
-
-//     expect(data.title).toBe(createdMovie.title);
-//     expect(data.id).toBe(createdMovie.id);
-// });
 
 describe('POST + DELETE /movies', () => {
     getJWT()
