@@ -98,3 +98,23 @@ test("GET /movies/{id}", async () => {
     expect(data.title).toBe(createdMovie.title);
     expect(data.id).toBe(createdMovie.id);
 });
+
+describe('POST + DELETE /movies', () => {
+    test('namn', async() => {
+        const response = await fetch(API_URL,{
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${jwtToken}`,
+                "Content-Type": "application/json"
+            },
+            body:  JSON.stringify({
+                "director": "James Cameron",
+                "description": "Giant blue spacemonkeys fight for the right to live on their planet and push out the humans.",
+                "productionYear": 2015,
+                "title": "Avatar"
+            })
+        })
+
+        expect(response.status).toBe(201)
+    })
+})
