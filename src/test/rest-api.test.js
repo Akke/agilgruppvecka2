@@ -50,19 +50,21 @@ let createdMovie;
 //     createdMovie = null;
 // });
 
-async function getJWT(){
-    const response = await fetch(LOGIN_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username: import.meta.env.VITE_LOGIN_USERNAME,
-            password: import.meta.env.VITE_LOGIN_PASSWORD
+function getJWT(){
+    beforeAll(async () => {
+        const response = await fetch(LOGIN_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: import.meta.env.VITE_LOGIN_USERNAME,
+                password: import.meta.env.VITE_LOGIN_PASSWORD
+            })
         })
+    
+        jwtToken = await response.text();
     })
-
-    jwtToken = await response.text();
 }
 
 async function addMovie(){
@@ -143,7 +145,7 @@ async function cleanUp(){
 // });
 
 describe('POST + DELETE /movies', () => {
-    beforeAll(getJWT())
+    getJWT()
 
     test('namn', async() => {
         //POST Klara
@@ -162,8 +164,15 @@ describe('POST + DELETE /movies', () => {
         })
 
         expect(response.status).toBe(201)
+        const responseJson = await response.json()
 
         //DELETE Andreas
-
+        const deleteResponse = await fetch(`${API_URL}/${responseJson.id}`, {
+            method: "DELETE",
+            headers:  {
+                "Authorization": `Bearer ${jwtToken}`
+            }
+        })
+        expect(deleteResponse.status).toBe(204)
     })
 })
