@@ -24,34 +24,7 @@ function getJWT(){
     })
 }
 
-
-
-describe("GET /movies", () => {
-    getJWT()
-    addMovie()
-    cleanUp()
-    test("borde returnera status 200 och en array med längd 1", async () => {
-                // GET Munganga
-        const response = await fetch(API_URL, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${jwtToken}`
-            }
-        });
-        
-        
-        expect(response.status).toBe(200);
-        const filmer = await response.json();
-
-
-        expect(Array.isArray(filmer)).toBe(true);
-        expect(filmer.length).toBeGreaterThan(0);
-
-    });
-});
-
-
-    function addMovie(){
+function addMovie(){
     beforeEach(async () => {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -82,6 +55,30 @@ function cleanUp(){
         createdMovie = null
     });
 }
+
+describe("GET /movies", () => {
+    getJWT()
+    addMovie()
+    cleanUp()
+    test("borde returnera status 200 och en array med längd 1", async () => {
+                // GET Munganga
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${jwtToken}`
+            }
+        });
+        
+        
+        expect(response.status).toBe(200);
+        const filmer = await response.json();
+
+
+        expect(Array.isArray(filmer)).toBe(true);
+        expect(filmer.length).toBeGreaterThan(0);
+
+    });
+});
 
 describe("PUT + GET /movies", () => {
     getJWT()
@@ -123,7 +120,7 @@ describe("PUT + GET /movies", () => {
 describe('POST + DELETE /movies', () => {
     getJWT()
 
-    test('namn', async() => {
+    test('Skapa och ta bort film', async() => {
         // POST Klara
         const response = await fetch(API_URL,{
             method: "POST",
