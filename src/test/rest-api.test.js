@@ -8,6 +8,7 @@ let jwtToken;
 let createdMovie;   
 
 function getJWT(){
+    // axel
     beforeAll(async () => {
         const response = await fetch(LOGIN_URL, {
             method: "POST",
@@ -25,6 +26,7 @@ function getJWT(){
 }
 
 function addMovie(){
+    // axel
     beforeEach(async () => {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -45,6 +47,7 @@ function addMovie(){
 }
 
 function cleanUp(){
+    // axel
     afterEach(async () => {
         await fetch(`${API_URL}/${createdMovie.id}`, {
             method: "DELETE",
@@ -80,6 +83,7 @@ describe("GET /movies", () => {
     });
 });
 
+// axel
 describe("PUT + GET /movies", () => {
     getJWT()
     addMovie()
@@ -115,8 +119,6 @@ describe("PUT + GET /movies", () => {
     });
 });
 
-
-
 describe('POST + DELETE /movies', () => {
     getJWT()
 
@@ -149,3 +151,28 @@ describe('POST + DELETE /movies', () => {
         expect(deleteResponse.status).toBe(204)
     })
 })
+
+// mohamed sharif 
+describe("GET /movies/{id}", () => {
+    getJWT()
+    addMovie()
+    cleanUp()
+    test("ska returnera filmen med korrekt ID", async () => {
+        const response = await fetch(`${API_URL}/${createdMovie.id}`, {
+          headers: {"Authorization": `Bearer ${jwtToken}`},
+          });
+
+          const text = await response.text();
+          let movie;
+          try {
+            movie = JSON.parse(text);
+          } catch (e) {
+            console.error("Kunde inte parsa JSON:", text);
+            throw e;
+          }
+
+          expect(response.status).toBe(200);
+          expect(movie.id).toBe(createdMovie.id);
+          expect(movie.title).toBe(createdMovie.title);
+    });
+});
