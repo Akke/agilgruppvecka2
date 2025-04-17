@@ -9,6 +9,7 @@ let jwtToken;
 let createdMovie;   
 
 function getJWT(){
+    // axel
     beforeAll(async () => {
         const response = await fetch(LOGIN_URL, {
             method: "POST",
@@ -25,8 +26,7 @@ function getJWT(){
     })
 }
 
-
-
+// munganga
 describe("GET /movies", () => {
     getJWT()
     addMovie()
@@ -54,8 +54,7 @@ describe("GET /movies", () => {
     });
 });
 
-
-    function addMovie(){
+function addMovie(){
     beforeEach(async () => {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -76,6 +75,7 @@ describe("GET /movies", () => {
 }
 
 function cleanUp(){
+    // axel
     afterEach(async () => {
         await fetch(`${API_URL}/${createdMovie.id}`, {
             method: "DELETE",
@@ -87,6 +87,7 @@ function cleanUp(){
     });
 }
 
+// axel
 describe("PUT + GET /movies", () => {
     getJWT()
     addMovie()
@@ -122,28 +123,10 @@ describe("PUT + GET /movies", () => {
     });
 });
 
-
-// Detta test behöver läggas in i sin korrekta describe!! Ansvarig kodare får fixa till detta 
-// test("GET /movies/{id}", async () => {
-//     const response = await fetch(`${API_URL}/${createdMovie.id}`, {
-//         method: "GET",
-//         headers: {
-//             "Authorization": `Bearer ${jwtToken}`
-//         }
-//     });
-
-//     expect(response.status).toBe(200);
-
-//     const data = await response.json();
-
-//     expect(data.title).toBe(createdMovie.title);
-//     expect(data.id).toBe(createdMovie.id);
-// });
-
 describe('POST + DELETE /movies', () => {
     getJWT()
 
-    test('namn', async() => {
+    test('Skapa och ta bort film', async() => {
         // POST Klara
         const response = await fetch(API_URL,{
             method: "POST",
@@ -172,3 +155,28 @@ describe('POST + DELETE /movies', () => {
         expect(deleteResponse.status).toBe(204)
     })
 })
+
+// mohamed sharif 
+describe("GET /movies/{id}", () => {
+    getJWT()
+    addMovie()
+    cleanUp()
+    test("ska returnera filmen med korrekt ID", async () => {
+        const response = await fetch(`${API_URL}/${createdMovie.id}`, {
+          headers: {"Authorization": `Bearer ${jwtToken}`},
+          });
+
+          const text = await response.text();
+          let movie;
+          try {
+            movie = JSON.parse(text);
+          } catch (e) {
+            console.error("Kunde inte parsa JSON:", text);
+            throw e;
+          }
+
+          expect(response.status).toBe(200);
+          expect(movie.id).toBe(createdMovie.id);
+          expect(movie.title).toBe(createdMovie.title);
+    });
+});
