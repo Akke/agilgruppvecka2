@@ -5,7 +5,7 @@ const Counter = () => {
 
     return (
         <>
-            count is {count}
+            {count}
         </>
     );
 }
