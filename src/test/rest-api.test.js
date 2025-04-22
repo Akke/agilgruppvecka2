@@ -4,10 +4,12 @@ config();
 
 const LOGIN_URL = "https://tokenservice-jwt-2025.fly.dev/token-service/v1/request-token";
 const API_URL = "https://tokenservice-jwt-2025.fly.dev/movies";
+
 let jwtToken;
 let createdMovie;   
 
 function getJWT(){
+    // axel
     beforeAll(async () => {
         const response = await fetch(LOGIN_URL, {
             method: "POST",
@@ -23,6 +25,34 @@ function getJWT(){
         jwtToken = await response.text();
     })
 }
+
+// munganga
+describe("GET /movies", () => {
+    getJWT()
+    addMovie()
+    cleanUp()
+    test("borde returnera status 200 och en array med längd 1", async () => {
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${jwtToken}`
+            }
+        });
+        
+
+        // 1. Kontrollera status 200
+        
+        expect(response.status).toBe(200);
+        const filmer = await response.json();
+
+        
+        // 2. Kontrollera att arrayen har längd 1
+
+        expect(Array.isArray(filmer)).toBe(true);
+        expect(filmer.length).toBeGreaterThan(0);
+
+    });
+});
 
 function addMovie(){
     beforeEach(async () => {
@@ -45,6 +75,7 @@ function addMovie(){
 }
 
 function cleanUp(){
+    // axel
     afterEach(async () => {
         await fetch(`${API_URL}/${createdMovie.id}`, {
             method: "DELETE",
@@ -80,8 +111,6 @@ describe("GET /movies/{id}", () => {
           expect(movie.title).toBe(createdMovie.title);
     });
 });
-  
-
 
 describe("PUT + GET /movies", () => {
     getJWT()
@@ -150,3 +179,28 @@ describe('POST + DELETE /movies', () => {
         expect(deleteResponse.status).toBe(204)
     })
 })
+
+// mohamed sharif 
+describe("GET /movies/{id}", () => {
+    getJWT()
+    addMovie()
+    cleanUp()
+    test("ska returnera filmen med korrekt ID", async () => {
+        const response = await fetch(`${API_URL}/${createdMovie.id}`, {
+          headers: {"Authorization": `Bearer ${jwtToken}`},
+          });
+
+          const text = await response.text();
+          let movie;
+          try {
+            movie = JSON.parse(text);
+          } catch (e) {
+            console.error("Kunde inte parsa JSON:", text);
+            throw e;
+          }
+
+          expect(response.status).toBe(200);
+          expect(movie.id).toBe(createdMovie.id);
+          expect(movie.title).toBe(createdMovie.title);
+    });
+});
