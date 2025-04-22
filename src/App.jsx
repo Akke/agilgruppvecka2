@@ -3,7 +3,9 @@ import Counter from "./components/Counter/Counter.jsx";
 
 function App() {
   return (
-    <Counter />
+    <>
+      count is <Counter />
+    </>
   )
 }
 
