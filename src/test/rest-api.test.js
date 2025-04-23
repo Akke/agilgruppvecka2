@@ -1,4 +1,4 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, test } from "vitest";
+import { afterEach,   beforeAll, beforeEach, describe, expect, test } from "vitest";
 import { config } from "dotenv";
 config();
 
@@ -87,7 +87,31 @@ function cleanUp(){
     });
 }
 
-// axel
+// mohamed sharif 
+describe("GET /movies/{id}", () => {
+    getJWT()
+    addMovie()
+    cleanUp()
+    test("ska returnera filmen med korrekt ID", async () => {
+        const response = await fetch(`${API_URL}/${createdMovie.id}`, {
+          headers: {"Authorization": `Bearer ${jwtToken}`},
+          });
+
+          const text = await response.text();
+          let movie;
+          try {
+            movie = JSON.parse(text);
+          } catch (e) {
+            console.error("Kunde inte parsa JSON:", text);
+            throw e;
+          }      
+          
+          expect(response.status).toBe(200);
+          expect(movie.id).toBe(createdMovie.id);
+          expect(movie.title).toBe(createdMovie.title);
+    });
+});
+
 describe("PUT + GET /movies", () => {
     getJWT()
     addMovie()
@@ -156,27 +180,6 @@ describe('POST + DELETE /movies', () => {
     })
 })
 
-// mohamed sharif 
-describe("GET /movies/{id}", () => {
-    getJWT()
-    addMovie()
-    cleanUp()
-    test("ska returnera filmen med korrekt ID", async () => {
-        const response = await fetch(`${API_URL}/${createdMovie.id}`, {
-          headers: {"Authorization": `Bearer ${jwtToken}`},
-          });
 
-          const text = await response.text();
-          let movie;
-          try {
-            movie = JSON.parse(text);
-          } catch (e) {
-            console.error("Kunde inte parsa JSON:", text);
-            throw e;
-          }
 
-          expect(response.status).toBe(200);
-          expect(movie.id).toBe(createdMovie.id);
-          expect(movie.title).toBe(createdMovie.title);
-    });
-});
+
