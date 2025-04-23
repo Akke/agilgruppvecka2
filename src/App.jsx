@@ -5,6 +5,7 @@ import './App.css'
 
 import React from 'react'
 import Raknare from './components/Raknare'
+import MovieList from './components/MovieList'
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   
   <h1>App</h1>
   <Raknare/>
+  <MovieList/>
 
 
 
