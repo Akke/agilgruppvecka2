@@ -1,18 +1,12 @@
-import { useState } from "react";
+import React from 'react';
 
-const Counter = () => {
-    const [count, setCount] = useState(0);
+export default function Counter() {
+  const [count, setCount] = React.useState(0);
 
-    const AddToCount = () => {
-        setCount(count + 1)
-    }
-
-    return (
-        <>
-            {count}
-            <button onClick={AddToCount}>Öka</button>
-        </>
-    );
+  return (
+    <div>
+      <span data-testid="counter-value">{count}</span>
+      <button onClick={() => setCount(count + 1)}>Öka</button>
+    </div>
+  );
 }
-
-export default Counter;
