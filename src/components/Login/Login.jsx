@@ -22,8 +22,8 @@ const Login = () => {
     return (
         <div className="login-form">
             <form onSubmit={onSubmit}>
-                <input type="text" name="username" placeholder="Username" />
-                <input type="password" name="password" placeholder="Password" />
+                <input type="text" name="username" placeholder="Username" autoComplete="username"/>
+                <input type="password" name="password" placeholder="Password" autoComplete="current-password"/>
                 <button type="submit" >Login</button>
             </form>
         </div>
